@@ -5,7 +5,7 @@ Hello Everyone, Contributors to this repository are [Rachit Goyal](https://githu
 We are initiating this project as a part of our Software Engineering Project, but we wish to take our idea to a kickass level.
 
 ## Stack Planned to be Used ##
-M - MongoDB
-E - Express
+M - MongoDB \
+E - Express <br/>
 N - Node.js
 
