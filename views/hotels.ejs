@@ -1,0 +1,8 @@
+<h1>This is the Hotels Page !</h1>
+
+<% hotels.forEach(function(hotel){ %> 
+    <div>
+        <h4><%= hotel.name %></h4>
+        <img src="<%= hotel.image %>" alt="<%= hotel.name %> Image">
+    </div>
+<% }); %>
