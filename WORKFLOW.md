@@ -21,3 +21,7 @@
 ## Style the hotels Page ##
 * Add a header/title
 * Make hotels display in a grid
+
+## Style Navbar and Form ##
+* Add a Navbar to all the templates
+* Style the new hotels form
