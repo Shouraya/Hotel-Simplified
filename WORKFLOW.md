@@ -11,3 +11,9 @@
 ## Layout and Basic Styling ##
 * Create header and footer partials
 * Add in Bootstrap
+
+## Creating New Hotel ##
+* Setup new hotel POST route
+* Add in body-parser
+* Setup Route to show form
+* Add basic unstyled form
