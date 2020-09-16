@@ -7,3 +7,7 @@
 
 * Name
 * Image
+
+## Layout and Basic Styling ##
+* Create header and footer partials
+* Add in Bootstrap

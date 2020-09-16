@@ -1,3 +1,4 @@
+<%- include("partials/header") %>
 <h1>This is the Hotels Page !</h1>
 
 <% hotels.forEach(function(hotel){ %> 
@@ -6,3 +7,5 @@
         <img src="<%= hotel.image %>" alt="<%= hotel.name %> Image">
     </div>
 <% }); %>
+
+<%- include("partials/footer") %>
