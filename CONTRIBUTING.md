@@ -1,4 +1,4 @@
-# Welcome to contributions of the Hotel Website #
+# Welcome to contributions of the Hotel Simplified #
 We follow a systematic git workflow: <br/>
 
 * Clone this repository on your local machine by typing the following command in terminal.
@@ -14,6 +14,8 @@ We follow a systematic git workflow: <br/>
 * MongoDB should be pre installed.
 
 ## Setup and Running of Project ##
+### Windows ### 
+<br/>
 
 * Clone this repository on your local machine by typing the following command in terminal.
    ```
@@ -33,4 +35,15 @@ We follow a systematic git workflow: <br/>
 Open http://localhost:3000 to view it in the browser. <br/> <br/>
 The page will reload if you make any changes and save it.
 
+### Linux ###
+Coming Soon
+<br/>
+
+### OS X ###
+Coming Soon
+<br/>
+
+## Contributing ##
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. <br/>
+Please make sure to update your local repository. <br/>
 
