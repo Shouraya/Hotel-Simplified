@@ -1,1 +1,5 @@
-<h1>This is the Show template</h1>
+<%- include("partials/header") %>
+    <p><%= hotel.name %></p>
+    <img src="<%= hotel.image %>" alt="<%= hotel.name %> Image">
+    <p><%= hotel.description %></p>
+<%- include("partials/footer") %>
