@@ -55,10 +55,11 @@ app.get("/hotels", function(req, res){
 //Create New Hotel Post (CREATE Route)
 app.post("/hotels", function(req, res){
     //get data from form
-    var name = req.body.name
-    var image = req.body.image
-    //add to hotels arra
-    var newHotel = {name:name, image:image}
+    var name = req.body.name;
+    var image = req.body.image;
+    var desc = req.body.description;
+    //add to hotels db
+    var newHotel = {name:name, image:image, description:desc}
     // Create a new hotel and save it to db
     Hotel.create(newHotel, function(err, newlyCreated){
         if(err){
