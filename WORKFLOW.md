@@ -25,3 +25,12 @@
 ## Style Navbar and Form ##
 * Add a Navbar to all the templates
 * Style the new hotels form
+
+## Add Mongoose ##
+* Install mongoose
+* Setup Hotel Model
+* Use campground model inside of routes
+
+## Show Page ##
+* Add description to our campground model
+* add show route/template
