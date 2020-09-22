@@ -12,6 +12,11 @@ mongoose.connect("mongodb://localhost/hotel_app", {
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
+// HTTP Logging
+const morgan = require('morgan');
+app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
+//HTTP Logging Code END
+
 //SCHEMA Setup
 var hotelSchema = new mongoose.Schema({
     name: String,
@@ -88,11 +93,6 @@ app.get("/hotels/:id", function(req, res){
         }
     });
 });
-
-// HTTP Logging
-const morgan = require('morgan');
-app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
-//HTTP Logging Code END
 
 //Server 
 var port = process.env.PORT || 3000;
