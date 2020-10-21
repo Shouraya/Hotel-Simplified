@@ -51,3 +51,9 @@
 * Nest Routes
 * Add comment new and create route
 * Add new fomment form
+
+## Style SHOW Page ##
+* Use Bootstrap Grid System
+* Add sidebar using above
+* Display Comments nicely
+  
