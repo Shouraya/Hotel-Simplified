@@ -33,4 +33,9 @@
 
 ## Show Page ##
 * Add description to our campground model
-* add show route/template
+* add show route/template 
+
+## Rafactor Mongoose Code ##
+* Create a models directory
+* Use module.exports
+* Require every thing in app.js correctly

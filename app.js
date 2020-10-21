@@ -3,10 +3,13 @@ const app = express();
 const bodyParser = require("body-parser"); //To get data from form
 const mongoose = require("mongoose");
 
+//SCHEMA REQUIRING :
+var Hotel = require("./models/hotel");
 mongoose.connect("mongodb://localhost/hotel_app", {
-	useNewUrlParser: true,   //these two written two remove deprecations
+	useNewUrlParser: true,   //these are written to remove deprecations warning
     useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+	useCreateIndex: true    
 });
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -17,14 +20,8 @@ const morgan = require('morgan');
 app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
 //HTTP Logging Code END
 
-//SCHEMA Setup
-var hotelSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
 
-var Hotel = mongoose.model("Hotel", hotelSchema);
+
 // Hotel.create({
 //     name: "Granite Hill", 
 //     image: "https://images.unsplash.com/photo-1600199712217-812672421f0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60",
