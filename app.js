@@ -24,21 +24,6 @@ const morgan = require('morgan');
 app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
 //HTTP Logging Code END
 
-
-
-// Hotel.create({
-//     name: "Granite Hill", 
-//     image: "https://images.unsplash.com/photo-1600199712217-812672421f0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=60",
-//     description: "This is a huge hotel, but no swimming pool !!"
-// },function(err,hotel){
-//     if(err){
-//         console.log(err);
-//     } else {
-//         console.log("Newly Created Hotel");
-//         console.log(hotel);
-//     }
-// });
-
 app.use(express.static("public"));  //PUBLIC --> static files (css)
 
 //Landing Route
@@ -85,10 +70,11 @@ app.get("/hotels/new", function(req, res){
 //Display Information about a particular Hotel (SHOW Route)
 app.get("/hotels/:id", function(req, res){
     //find the campground with the given ID
-    Hotel.findById(req.params.id, function(err, foundHotel){
+    Hotel.findById(req.params.id).populate("comments").exec(function(err, foundHotel){
         if(err) {
             console.log(err);
         } else {
+            console.log(foundHotel);
             //render SHOW template
             res.render("show", {hotel:foundHotel});
         }
