@@ -39,3 +39,10 @@
 * Create a models directory
 * Use module.exports
 * Require every thing in app.js correctly
+
+## Add Seeds File and the comments model ##
+* Add seeds.js file
+* Run the seeds file every time the server starts
+* Make our error go away, by adding comment.js
+* Referencing data between hotel and comment model
+* display comments on show page

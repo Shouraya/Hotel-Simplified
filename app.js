@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 
 //SCHEMA REQUIRING :
 var Hotel = require("./models/hotel");
+//SEED File
+var seedDB = require("./seeds") ;
+seedDB();
+
 mongoose.connect("mongodb://localhost/hotel_app", {
 	useNewUrlParser: true,   //these are written to remove deprecations warning
     useUnifiedTopology: true,
