@@ -4,7 +4,7 @@
     <div class="row">
         <h1 style="text-align: center;">Add New Comment to <%= hotel.name %> </h1>
         <div style="width: 30%; margin: 2rem auto;">
-            <form action="/hotels/<% hotel._id %>/comments" method="POST">
+            <form action="/hotels/<%= hotel._id %>/comments" method="POST">
                 <div class="form-group">
                     <input class="form-control" type="text" name="comment[text]" placeholder="Text">
                 </div>

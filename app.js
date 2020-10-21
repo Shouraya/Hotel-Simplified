@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 
 //SCHEMA REQUIRING :
 var Hotel = require("./models/hotel");
+var Comment = require("./models/comment");
 //SEED File
 var seedDB = require("./seeds") ;
 seedDB();
@@ -84,16 +85,41 @@ app.get("/hotels/:id", function(req, res){
 // ================
 // COMMENTS ROUTES
 // ================
+
 app.get("/hotels/:id/comments/new", function(req, res){
-    //find hotel by id
+    // find campground by id
     Hotel.findById(req.params.id, function(err, hotel){
         if(err){
             console.log(err);
         } else {
-            res.render("comments/new", {hotel:hotel});
+             res.render("comments/new", {hotel: hotel});
         }
     })
 });
+
+app.post("/hotels/:id/comments", function(req, res){
+   //lookup campground using ID
+   Hotel.findById(req.params.id, function(err, hotel){
+       if(err){
+           console.log(err);
+           res.redirect("/hotels");
+       } else {
+            //create new comment
+            Comment.create(req.body.comment, function(err, comment){
+            if(err){
+                console.log(err);
+            } else {
+                //connect new comment to campground
+                hotel.comments.push(comment);
+                hotel.save();
+                //redirect campground show page
+                res.redirect('/hotels/' + hotel._id);
+            }
+            });
+         }
+   });
+});
+
 
 //Server 
 var port = process.env.PORT || 3000;

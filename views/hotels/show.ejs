@@ -2,6 +2,9 @@
     <p><%= hotel.name %></p>
     <img src="<%= hotel.image %>" alt="<%= hotel.name %> Image">
     <p><%= hotel.description %></p>
+    <p>
+        <a class="btn btn-success" href="/hotels/<%= hotel._id %>/comments/new">Add New Comment</a>
+    </p>    
     <%hotel.comments.forEach(function(comment){%>
         <p>
             <strong> <%= comment.author %> </strong> - <%= comment.text %>
