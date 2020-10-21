@@ -46,3 +46,8 @@
 * Make our error go away, by adding comment.js
 * Referencing data between hotel and comment model
 * display comments on show page
+
+## Comment Create/New ##
+* Nest Routes
+* Add comment new and create route
+* Add new fomment form

@@ -38,7 +38,7 @@ app.get("/hotels", function(req, res){
         if(err){
             console.log(err);
         } else {
-            res.render("index", {hotels:allHotels});
+            res.render("hotels/index", {hotels:allHotels});
         }
     })
 });
@@ -64,7 +64,7 @@ app.post("/hotels", function(req, res){
 
 //Display form (NEW Route)
 app.get("/hotels/new", function(req, res){
-    res.render("new");
+    res.render("hotels/new");
 });
 
 //Display Information about a particular Hotel (SHOW Route)
@@ -76,9 +76,23 @@ app.get("/hotels/:id", function(req, res){
         } else {
             console.log(foundHotel);
             //render SHOW template
-            res.render("show", {hotel:foundHotel});
+            res.render("hotels/show", {hotel:foundHotel});
         }
     });
+});
+
+// ================
+// COMMENTS ROUTES
+// ================
+app.get("/hotels/:id/comments/new", function(req, res){
+    //find hotel by id
+    Hotel.findById(req.params.id, function(err, hotel){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("comments/new", {hotel:hotel});
+        }
+    })
 });
 
 //Server 
