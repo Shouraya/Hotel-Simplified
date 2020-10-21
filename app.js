@@ -8,7 +8,6 @@ var Hotel = require("./models/hotel");
 var Comment = require("./models/comment");
 //SEED File
 var seedDB = require("./seeds") ;
-seedDB();
 
 mongoose.connect("mongodb://localhost/hotel_app", {
 	useNewUrlParser: true,   //these are written to remove deprecations warning
@@ -25,7 +24,10 @@ const morgan = require('morgan');
 app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
 //HTTP Logging Code END
 
-app.use(express.static("public"));  //PUBLIC --> static files (css)
+app.use(express.static(__dirname + "/public"));  //PUBLIC --> static files (css)
+// console.log(__dirname);
+
+seedDB();
 
 //Landing Route
 app.get("/", (req, res) => {
