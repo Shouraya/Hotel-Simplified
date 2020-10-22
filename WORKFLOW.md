@@ -60,3 +60,8 @@
 ## Add User Model ##
 * Install all packages that we need for Local Auth
 * Define User Model
+
+## Auth - Register ##
+* Configure Passport
+* Add register routes
+* Add register template

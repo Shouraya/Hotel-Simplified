@@ -1,36 +1,50 @@
+require('dotenv').config();
 const express = require ("express"),
       app = express(),
       bodyParser = require("body-parser"), //To get data from form
       mongoose = require("mongoose"),
       passport = require("passport"),
-      LocalStrategy = require("passport-local");
-
-//SCHEMA REQUIRING :
-var Hotel = require("./models/hotel"),
-    Comment = require("./models/comment"),
-    User = require("./models/user");
-//SEED File
-var seedDB = require("./seeds") ;
+      LocalStrategy = require("passport-local"),
+      Hotel = require("./models/hotel"),
+      Comment = require("./models/comment"),
+      User = require("./models/user"),
+      seedDB = require("./seeds");
 
 mongoose.connect("mongodb://localhost/hotel_app", {
-	useNewUrlParser: true,   //these are written to remove deprecations warning
+    useNewUrlParser: true,   //these are written to remove deprecations warning
     useUnifiedTopology: true,
     useFindAndModify: false,
-	useCreateIndex: true    
+    useCreateIndex: true    
 });
+//SCHEMA REQUIRING :
+// var 
+//SEED File
+// var  ;
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));  //PUBLIC --> static files (css)
+// console.log(__dirname);
+seedDB();
 
 // HTTP Logging
 const morgan = require('morgan');
 app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
 //HTTP Logging Code END
 
-app.use(express.static(__dirname + "/public"));  //PUBLIC --> static files (css)
-// console.log(__dirname);
+///PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-seedDB();
 
 //Landing Route
 app.get("/", (req, res) => {
@@ -125,6 +139,25 @@ app.post("/hotels/:id/comments", function(req, res){
    });
 });
 
+// =================
+//    AUTH ROUTES
+// =================
+app.get("/register",function(req, res){
+    res.render("register");
+});
+
+app.post("/register", function(req, res){
+    var newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function(err, user){
+        if(err) {
+            console.log(err);
+            return res.render("register");
+        } 
+        passport.authenticate("local")(req, res, function(){
+            res.redirect("/hotels")
+        })
+    });
+});
 
 //Server 
 var port = process.env.PORT || 3000;
