@@ -57,3 +57,21 @@
 * Add sidebar using above
 * Display Comments nicely
   
+## Add User Model ##
+* Install all packages that we need for Local Auth
+* Define User Model
+
+## Auth - Register ##
+* Configure Passport
+* Add register routes
+* Add register template
+
+## Auth - Login ##
+* Add Login Routes
+* Add Login template
+
+## Logout logic and Navbar improvement ##
+* Add logout route
+* Prevent user to post comment without being logged in
+* Add links to navbar
+* Show/hide auth links correctly in navbar

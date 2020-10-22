@@ -1,34 +1,50 @@
-const express = require ("express");
-const app = express();
-const bodyParser = require("body-parser"); //To get data from form
-const mongoose = require("mongoose");
-
-//SCHEMA REQUIRING :
-var Hotel = require("./models/hotel");
-var Comment = require("./models/comment");
-//SEED File
-var seedDB = require("./seeds") ;
+require('dotenv').config();
+const express = require ("express"),
+      app = express(),
+      bodyParser = require("body-parser"), //To get data from form
+      mongoose = require("mongoose"),
+      passport = require("passport"),
+      LocalStrategy = require("passport-local"),
+      Hotel = require("./models/hotel"),
+      Comment = require("./models/comment"),
+      User = require("./models/user"),
+      seedDB = require("./seeds");
 
 mongoose.connect("mongodb://localhost/hotel_app", {
-	useNewUrlParser: true,   //these are written to remove deprecations warning
+    useNewUrlParser: true,   //these are written to remove deprecations warning
     useUnifiedTopology: true,
     useFindAndModify: false,
-	useCreateIndex: true    
+    useCreateIndex: true    
 });
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));  //PUBLIC --> static files (css)
+// console.log(__dirname);
+seedDB();
 
 // HTTP Logging
 const morgan = require('morgan');
 app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
 //HTTP Logging Code END
 
-app.use(express.static(__dirname + "/public"));  //PUBLIC --> static files (css)
-// console.log(__dirname);
+///PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-seedDB();
-
+app.use(function(req, res, next){
+    
+    res.locals.currentUser = req.user;
+    next();
+});
 //Landing Route
 app.get("/", (req, res) => {
     res.render("landing");
@@ -42,6 +58,7 @@ app.get("/hotels", function(req, res){
             console.log(err);
         } else {
             res.render("hotels/index", {hotels:allHotels});
+                //req.user //contain username and id of currently logged in user
         }
     })
 });
@@ -88,7 +105,7 @@ app.get("/hotels/:id", function(req, res){
 // COMMENTS ROUTES
 // ================
 
-app.get("/hotels/:id/comments/new", function(req, res){
+app.get("/hotels/:id/comments/new", isLoggedIn, function(req, res){
     // find campground by id
     Hotel.findById(req.params.id, function(err, hotel){
         if(err){
@@ -99,7 +116,7 @@ app.get("/hotels/:id/comments/new", function(req, res){
     })
 });
 
-app.post("/hotels/:id/comments", function(req, res){
+app.post("/hotels/:id/comments", isLoggedIn, function(req, res){
    //lookup campground using ID
    Hotel.findById(req.params.id, function(err, hotel){
        if(err){
@@ -122,7 +139,50 @@ app.post("/hotels/:id/comments", function(req, res){
    });
 });
 
+// =================
+//    AUTH ROUTES
+// =================
+app.get("/register",function(req, res){
+    res.render("register");
+});
 
+app.post("/register", function(req, res){
+    var newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function(err, user){
+        if(err) {
+            console.log(err);
+            return res.render("register");
+        } 
+        passport.authenticate("local")(req, res, function(){
+            res.redirect("/hotels")
+        })
+    });
+});
+
+//SHOW LOGIN FORM 
+app.get("/login", function(req, res){
+    res.render("login");
+});
+
+app.post("/login", passport.authenticate("local", {
+        successRedirect: "/hotels",
+        failureRedirect: "/login"
+    }), function(req, res){  
+});
+
+// Logout
+app.get("/logout", function(req, res){
+    req.logout();
+    res.redirect("/hotels");
+});
+
+
+function isLoggedIn(req, res, next){
+    if (req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 //Server 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
