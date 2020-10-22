@@ -74,3 +74,4 @@
 * Add logout route
 * Prevent user to post comment without being logged in
 * Add links to navbar
+* Show/hide auth links correctly in navbar

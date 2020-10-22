@@ -40,7 +40,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
+app.use(function(req, res, next){
+    
+    res.locals.currentUser = req.user;
+    next();
+});
 //Landing Route
 app.get("/", (req, res) => {
     res.render("landing");
@@ -54,6 +58,7 @@ app.get("/hotels", function(req, res){
             console.log(err);
         } else {
             res.render("hotels/index", {hotels:allHotels});
+                //req.user //contain username and id of currently logged in user
         }
     })
 });
