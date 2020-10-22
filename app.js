@@ -1,11 +1,14 @@
-const express = require ("express");
-const app = express();
-const bodyParser = require("body-parser"); //To get data from form
-const mongoose = require("mongoose");
+const express = require ("express"),
+      app = express(),
+      bodyParser = require("body-parser"), //To get data from form
+      mongoose = require("mongoose"),
+      passport = require("passport"),
+      LocalStrategy = require("passport-local");
 
 //SCHEMA REQUIRING :
-var Hotel = require("./models/hotel");
-var Comment = require("./models/comment");
+var Hotel = require("./models/hotel"),
+    Comment = require("./models/comment"),
+    User = require("./models/user");
 //SEED File
 var seedDB = require("./seeds") ;
 

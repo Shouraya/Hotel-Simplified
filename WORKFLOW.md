@@ -57,3 +57,6 @@
 * Add sidebar using above
 * Display Comments nicely
   
+## Add User Model ##
+* Install all packages that we need for Local Auth
+* Define User Model
