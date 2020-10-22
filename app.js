@@ -16,11 +16,6 @@ mongoose.connect("mongodb://localhost/hotel_app", {
     useFindAndModify: false,
     useCreateIndex: true    
 });
-//SCHEMA REQUIRING :
-// var 
-//SEED File
-// var  ;
-
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -157,6 +152,17 @@ app.post("/register", function(req, res){
             res.redirect("/hotels")
         })
     });
+});
+
+//SHOW LOGIN FORM 
+app.get("/login", function(req, res){
+    res.render("login");
+});
+
+app.post("/login", passport.authenticate("local", {
+        successRedirect: "/hotels",
+        failureRedirect: "/login"
+    }), function(req, res){  
 });
 
 //Server 
