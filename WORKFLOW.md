@@ -69,3 +69,8 @@
 ## Auth - Login ##
 * Add Login Routes
 * Add Login template
+
+## Logout logic and Navbar improvement ##
+* Add logout route
+* Prevent user to post comment without being logged in
+* Add links to navbar
