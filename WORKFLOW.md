@@ -75,3 +75,6 @@
 * Prevent user to post comment without being logged in
 * Add links to navbar
 * Show/hide auth links correctly in navbar
+
+## Refactor the routes ##
+* Use express router and dry up app.js code
