@@ -25,8 +25,9 @@ mongoose.connect("mongodb://localhost/hotel_app", {
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public")); 
-seedDB();
 
+// seedDB();    //seed the database
+ 
 // HTTP Logging
 const morgan = require('morgan');
 app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
