@@ -82,3 +82,7 @@
 ## Users + Comments ##
 * Associate users and comments model
 * Save creator's name to comment automatically
+
+## Users + Hotels ##
+* Prevent an unauthenticated user from creating a hotel
+* Save username+id to newly created hotel
