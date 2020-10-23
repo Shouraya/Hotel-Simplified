@@ -11,10 +11,13 @@ router.get("/", (req, res) => {
 // =================
 //    AUTH ROUTES
 // =================
+
+// SHOW register form
 router.get("/register",function(req, res){
     res.render("register");
 });
 
+//Handles Sign Up Logic
 router.post("/register", function(req, res){
     var newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function(err, user){
@@ -33,6 +36,7 @@ router.get("/login", function(req, res){
     res.render("login");
 });
 
+//Handle Login Logic
 router.post("/login", passport.authenticate("local", {
         successRedirect: "/hotels",
         failureRedirect: "/login"
@@ -45,7 +49,7 @@ router.get("/logout", function(req, res){
     res.redirect("/hotels");
 });
 
-
+//Middleware
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
         return next();

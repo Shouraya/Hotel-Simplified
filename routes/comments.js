@@ -3,10 +3,7 @@ const express = require("express"),
       Hotel = require("../models/hotel"),
       Comment = require("../models/comment");
 
-// ================
-// COMMENTS ROUTES
-// ================
-
+//COMMENTS - new
 router.get("/new", isLoggedIn, function(req, res){
     // find campground by id
     Hotel.findById(req.params.id, function(err, hotel){
@@ -18,6 +15,7 @@ router.get("/new", isLoggedIn, function(req, res){
     })
 });
 
+//COMMENTS - create
 router.post("/", isLoggedIn, function(req, res){
    //lookup campground using ID
    Hotel.findById(req.params.id, function(err, hotel){
@@ -41,6 +39,7 @@ router.post("/", isLoggedIn, function(req, res){
    });
 });
 
+//MIDDLEWARE
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
         return next();
