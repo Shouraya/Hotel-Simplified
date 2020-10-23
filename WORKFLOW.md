@@ -78,3 +78,7 @@
 
 ## Refactor the routes ##
 * Use express router and dry up app.js code
+
+## Users + Comments ##
+* Associate users and comments model
+* Save creator's name to comment automatically
