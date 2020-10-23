@@ -1,10 +1,13 @@
-
+const express = require("express"),
+      router = express.Router({mergeParams:true}),
+      Hotel = require("../models/hotel"),
+      Comment = require("../models/comment");
 
 // ================
 // COMMENTS ROUTES
 // ================
 
-app.get("/hotels/:id/comments/new", isLoggedIn, function(req, res){
+router.get("/new", isLoggedIn, function(req, res){
     // find campground by id
     Hotel.findById(req.params.id, function(err, hotel){
         if(err){
@@ -15,7 +18,7 @@ app.get("/hotels/:id/comments/new", isLoggedIn, function(req, res){
     })
 });
 
-app.post("/hotels/:id/comments", isLoggedIn, function(req, res){
+router.post("/", isLoggedIn, function(req, res){
    //lookup campground using ID
    Hotel.findById(req.params.id, function(err, hotel){
        if(err){
@@ -37,3 +40,12 @@ app.post("/hotels/:id/comments", isLoggedIn, function(req, res){
          }
    });
 });
+
+function isLoggedIn(req, res, next){
+    if (req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
+
+module.exports = router;

@@ -10,6 +10,11 @@ const express = require ("express"),
       User = require("./models/user"),
       seedDB = require("./seeds");
 
+// IMPORTING ROUTERS
+const commentRoutes = require("./routes/comments"),
+      hotelRoutes = require("./routes/hotels"),
+      indexRoutes = require("./routes/index");
+
 mongoose.connect("mongodb://localhost/hotel_app", {
     useNewUrlParser: true,   //these are written to remove deprecations warning
     useUnifiedTopology: true,
@@ -41,10 +46,15 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
-    
     res.locals.currentUser = req.user;
     next();
 });
+
+app.use(indexRoutes);
+app.use("/hotels", hotelRoutes);
+app.use("/hotels/:id/comments", commentRoutes);
+
+
 //Server 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){

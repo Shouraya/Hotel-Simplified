@@ -1,7 +1,9 @@
-
+const express = require("express"),
+      router = express.Router(),
+      Hotel = require("../models/hotel");
 
 //Display all Hotels that we have (INDEX ROUTE)
-app.get("/hotels", function(req, res){
+router.get("/", function(req, res){
     // get all hotels from db
     Hotel.find({}, function(err, allHotels){
         if(err){
@@ -14,7 +16,7 @@ app.get("/hotels", function(req, res){
 });
 
 //Create New Hotel Post (CREATE Route)
-app.post("/hotels", function(req, res){
+router.post("/", function(req, res){
     //get data from form
     var name = req.body.name;
     var image = req.body.image;
@@ -33,12 +35,12 @@ app.post("/hotels", function(req, res){
 });
 
 //Display form (NEW Route)
-app.get("/hotels/new", function(req, res){
+router.get("/new", function(req, res){
     res.render("hotels/new");
 });
 
 //Display Information about a particular Hotel (SHOW Route)
-app.get("/hotels/:id", function(req, res){
+router.get("/:id", function(req, res){
     //find the campground with the given ID
     Hotel.findById(req.params.id).populate("comments").exec(function(err, foundHotel){
         if(err) {
@@ -50,3 +52,5 @@ app.get("/hotels/:id", function(req, res){
         }
     });
 });
+
+module.exports = router;
