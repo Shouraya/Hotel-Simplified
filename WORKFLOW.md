@@ -96,3 +96,9 @@
 ## DELETE HOTELS ##
 * Add delete route
 * Add delte button
+
+## Authorization ##
+* User can only edit his/her hotel ONLY
+* User can delete his/her hotel ONLY
+* Hide/Show EDIT and DELETE buttons to all other users.
+  

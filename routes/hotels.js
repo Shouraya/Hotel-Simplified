@@ -1,3 +1,5 @@
+const hotel = require("../models/hotel");
+
 const express = require("express"),
       router = express.Router(),
       Hotel = require("../models/hotel");
@@ -59,13 +61,26 @@ router.get("/:id", function(req, res){
 
 //Edit Hotel Route
 router.get("/:id/edit", function(req, res){
-    Hotel.findById(req.params.id, function(err, foundHotel){
-        if(err){
-            res.redirect("/hotels");
-        } else {
-            res.render("hotels/edit", {hotel:foundHotel});
-        }
-    });
+    //is user logged in or not
+    if(req.isAuthenticated()){
+        Hotel.findById(req.params.id, function(err, foundHotel){
+            if(err){
+                res.redirect("/hotels");
+            } else {
+                //does user own hotel?
+                if(foundHotel.author.id.equals(req.user._id)) {
+                    res.render("hotels/edit", {hotel:foundHotel});
+                } else {
+                    res.send("You do not have permission to send this !")
+                }
+            }
+        }); 
+    } else {
+        console.log("YOU NEED TO BE LOOGED IN !")
+        res.send("YOU NEED TO BE LOOGED IN !");
+    }
+        //otherwise also redirect
+    //if not, redirect
 });
 
 //Update Campground Route
