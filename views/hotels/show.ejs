@@ -20,6 +20,12 @@
                         <p>
                             <em>Submitted By <%= hotel.author.username %></em>
                         </p>
+                        <% if(currentUser && hotel.author.id.equals(currentUser._id)){ %>
+                            <a href="/hotels/<%=hotel._id%>/edit" class="btn btn-warning">Edit</a>
+                            <form action="/hotels/<%= hotel._id %>?_method=DELETE" method="POST" id="delete-form">
+                                <button class="btn btn-danger">Delete</button>   
+                            </form>
+                        <% } %>
                     </div>
                 </div>
                 <div class="well">
