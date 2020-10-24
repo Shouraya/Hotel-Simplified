@@ -70,6 +70,17 @@ router.get("/:id/edit", function(req, res){
 
 //Update Campground Route
 
+router.put("/:id", function(req, res){
+    //find and update the correct hotel
+    Hotel.findByIdAndUpdate(req.params.id, req.body.hotel, function(err, updatedHotel){
+        if(err){
+            res.redirect("/hotels");
+        } else {
+            res.redirect("/hotels/" + req.params.id);
+        }
+    });
+});
+
 //MIDDLEWARE
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
