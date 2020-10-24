@@ -57,6 +57,19 @@ router.get("/:id", function(req, res){
     });
 });
 
+//Edit Hotel Route
+router.get("/:id/edit", function(req, res){
+    Hotel.findById(req.params.id, function(err, foundHotel){
+        if(err){
+            res.redirect("/hotels");
+        } else {
+            res.render("hotels/edit", {hotel:foundHotel});
+        }
+    });
+});
+
+//Update Campground Route
+
 //MIDDLEWARE
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){

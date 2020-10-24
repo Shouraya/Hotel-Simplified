@@ -86,3 +86,9 @@
 ## Users + Hotels ##
 * Prevent an unauthenticated user from creating a hotel
 * Save username+id to newly created hotel
+
+## Editing Hotels ##
+* Add method-override
+* Add edit route(s) for hotel
+* Add the link to page (render them)
+* Add update route
