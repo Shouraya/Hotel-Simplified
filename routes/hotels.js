@@ -60,32 +60,14 @@ router.get("/:id", function(req, res){
 });
 
 //Edit Hotel Route
-router.get("/:id/edit", function(req, res){
-    //is user logged in or not
-    if(req.isAuthenticated()){
-        Hotel.findById(req.params.id, function(err, foundHotel){
-            if(err){
-                res.redirect("/hotels");
-            } else {
-                //does user own hotel?
-                if(foundHotel.author.id.equals(req.user._id)) {
-                    res.render("hotels/edit", {hotel:foundHotel});
-                } else {
-                    res.send("You do not have permission to send this !")
-                }
-            }
+router.get("/:id/edit", checkHotelOwnership, function(req, res){
+    Hotel.findById(req.params.id, function(err, foundHotel){
+         res.render("hotels/edit", {hotel:foundHotel});
         }); 
-    } else {
-        console.log("YOU NEED TO BE LOOGED IN !")
-        res.send("YOU NEED TO BE LOOGED IN !");
-    }
-        //otherwise also redirect
-    //if not, redirect
 });
 
 //Update Campground Route
-
-router.put("/:id", function(req, res){
+router.put("/:id", checkHotelOwnership, function(req, res){
     //find and update the correct hotel
     Hotel.findByIdAndUpdate(req.params.id, req.body.hotel, function(err, updatedHotel){
         if(err){
@@ -97,7 +79,7 @@ router.put("/:id", function(req, res){
 });
 
 // DESTROY/DELETE HOTEL ROUTE
-router.delete("/:id", function(req, res){
+router.delete("/:id", checkHotelOwnership, function(req, res){
     Hotel.findByIdAndRemove(req.params.id, function(err){
         if(err) {
             res.redirect("/hotels");
@@ -113,6 +95,25 @@ function isLoggedIn(req, res, next){
         return next();
     }
     res.redirect("/login");
+}
+
+function checkHotelOwnership(req, res, next){
+    if(req.isAuthenticated()){
+        Hotel.findById(req.params.id, function(err, foundHotel){
+            if(err){
+                res.redirect("back");
+            } else {
+                //does user own hotel?
+                if(foundHotel.author.id.equals(req.user._id)) {
+                    next();
+                } else {
+                    res.redirect("back");
+                }
+            }
+        }); 
+    } else {
+       res.redirect("back"); //redirect back to from the place user has come from
+    }
 }
 
 module.exports = router;
