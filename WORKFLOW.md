@@ -92,3 +92,7 @@
 * Add edit route(s) for hotel
 * Add the link to page (render them)
 * Add update route
+
+## DELETE HOTELS ##
+* Add delete route
+* Add delte button

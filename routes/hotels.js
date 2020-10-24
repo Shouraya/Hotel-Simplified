@@ -81,6 +81,17 @@ router.put("/:id", function(req, res){
     });
 });
 
+// DESTROY/DELETE HOTEL ROUTE
+router.delete("/:id", function(req, res){
+    Hotel.findByIdAndRemove(req.params.id, function(err){
+        if(err) {
+            res.redirect("/hotels");
+        } else {
+            res.redirect("/hotels");
+        }
+    });
+}); 
+
 //MIDDLEWARE
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
