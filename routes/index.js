@@ -33,7 +33,7 @@ router.post("/register", function(req, res){
 
 //SHOW LOGIN FORM 
 router.get("/login", function(req, res){
-    res.render("login", {message: req.flash("error")});
+    res.render("login");
 });
 
 //Handle Login Logic
@@ -46,6 +46,7 @@ router.post("/login", passport.authenticate("local", {
 // Logout
 router.get("/logout", function(req, res){
     req.logout();
+    req.flash("success", "Logged You Out !");
     res.redirect("/hotels");
 });
 
