@@ -106,3 +106,7 @@
 * User can edit only his/her comments
 * User can delete only his/her comments
 * Hide/Show edit and delete button for all other users
+
+## Adding Flash Messages ##
+* Install and configure connect-flash
+* Add bootstrap alerts to header
