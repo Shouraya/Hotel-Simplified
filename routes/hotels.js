@@ -1,8 +1,7 @@
-const hotel = require("../models/hotel");
-
 const express = require("express"),
       router = express.Router(),
-      Hotel = require("../models/hotel");
+      Hotel = require("../models/hotel"),
+      middleware = require("../middleware/index");
 
 //Display all Hotels that we have (INDEX ROUTE)
 router.get("/", function(req, res){
@@ -18,7 +17,7 @@ router.get("/", function(req, res){
 });
 
 //Create New Hotel Post (CREATE Route)
-router.post("/", isLoggedIn, function(req, res){
+router.post("/", middleware.isLoggedIn, function(req, res){
     //get data from form
     var name = req.body.name;
     var image = req.body.image;
@@ -41,7 +40,7 @@ router.post("/", isLoggedIn, function(req, res){
 });
 
 //Display form (NEW Route)
-router.get("/new", isLoggedIn, function(req, res){
+router.get("/new", middleware.isLoggedIn, function(req, res){
     res.render("hotels/new");
 });
 
@@ -60,14 +59,14 @@ router.get("/:id", function(req, res){
 });
 
 //Edit Hotel Route
-router.get("/:id/edit", checkHotelOwnership, function(req, res){
+router.get("/:id/edit", middleware.checkHotelOwnership, function(req, res){
     Hotel.findById(req.params.id, function(err, foundHotel){
          res.render("hotels/edit", {hotel:foundHotel});
         }); 
 });
 
 //Update Campground Route
-router.put("/:id", checkHotelOwnership, function(req, res){
+router.put("/:id", middleware.checkHotelOwnership, function(req, res){
     //find and update the correct hotel
     Hotel.findByIdAndUpdate(req.params.id, req.body.hotel, function(err, updatedHotel){
         if(err){
@@ -79,7 +78,7 @@ router.put("/:id", checkHotelOwnership, function(req, res){
 });
 
 // DESTROY/DELETE HOTEL ROUTE
-router.delete("/:id", checkHotelOwnership, function(req, res){
+router.delete("/:id", middleware.checkHotelOwnership, function(req, res){
     Hotel.findByIdAndRemove(req.params.id, function(err){
         if(err) {
             res.redirect("/hotels");
@@ -89,31 +88,5 @@ router.delete("/:id", checkHotelOwnership, function(req, res){
     });
 }); 
 
-//MIDDLEWARE
-function isLoggedIn(req, res, next){
-    if (req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
-
-function checkHotelOwnership(req, res, next){
-    if(req.isAuthenticated()){
-        Hotel.findById(req.params.id, function(err, foundHotel){
-            if(err){
-                res.redirect("back");
-            } else {
-                //does user own hotel?
-                if(foundHotel.author.id.equals(req.user._id)) {
-                    next();
-                } else {
-                    res.redirect("back");
-                }
-            }
-        }); 
-    } else {
-       res.redirect("back"); //redirect back to from the place user has come from
-    }
-}
 
 module.exports = router;
