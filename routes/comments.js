@@ -49,13 +49,20 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 
 // COMMENT EDIT ROUTE
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, res){
-    Comment.findById(req.params.comment_id, function(err, foundComment){
-       if(err){
-           res.redirect("back");
-       } else {
-         res.render("comments/edit", {hotel_id: req.params.id, comment: foundComment});
-       }
+    Hotel.findById(req.params.id, function(err, foundHotel) {
+        if(err || !foundHotel) {
+            req.flash("error", "No Hotel found");
+            return res.redirect("back");
+        }
+        Comment.findById(req.params.comment_id, function(err, foundComment){
+            if(err){
+                res.redirect("back");
+            } else {
+              res.render("comments/edit", {hotel_id: req.params.id, comment: foundComment});
+            }
+         });
     });
+
  });
  
  // COMMENT UPDATE
