@@ -5,7 +5,7 @@ const middlewareObj = {};
 middlewareObj.checkHotelOwnership = function(req, res, next){
     if(req.isAuthenticated()){
         Hotel.findById(req.params.id, function(err, foundHotel){
-            if(err){
+            if(err || !foundHotel){
                 req.flash("error", "Hotel not found");
                 res.redirect("back");
             } else {
@@ -27,7 +27,8 @@ middlewareObj.checkHotelOwnership = function(req, res, next){
 middlewareObj.checkCommentOwnership = function(req, res, next) {
     if(req.isAuthenticated()){
         Comment.findById(req.params.comment_id, function(err, foundComment) {
-            if(err){
+            if(err || !foundComment){
+                req.flash("error", "Comment not Found");
                 res.redirect("back");
             } else {
                 //does the user own the comment ?
