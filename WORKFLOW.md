@@ -97,8 +97,12 @@
 * Add delete route
 * Add delte button
 
-## Authorization ##
+## Authorization - Hotel ##
 * User can only edit his/her hotel ONLY
 * User can delete his/her hotel ONLY
 * Hide/Show EDIT and DELETE buttons to all other users.
   
+## Authorization - Comments ##
+* User can edit only his/her comments
+* User can delete only his/her comments
+* Hide/Show edit and delete button for all other users
