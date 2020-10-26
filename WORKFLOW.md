@@ -110,3 +110,7 @@
 ## Adding Flash Messages ##
 * Install and configure connect-flash
 * Add bootstrap alerts to header
+
+## Improve Landing Page ##
+* Make animation slider onto landing page
+* Add button to redirect to /hotels.
