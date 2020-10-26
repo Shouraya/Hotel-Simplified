@@ -114,3 +114,6 @@
 ## Improve Landing Page ##
 * Make animation slider onto landing page
 * Add button to redirect to /hotels.
+
+## Add Dynamic Pricing ##
+* Add dynamic pricing to hotels show page
