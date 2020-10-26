@@ -20,6 +20,7 @@ router.get("/", function(req, res){
 router.post("/", middleware.isLoggedIn, function(req, res){
     //get data from form
     var name = req.body.name;
+    var price = req.body.price;
     var image = req.body.image;
     var desc = req.body.description;
     var author = {
@@ -27,7 +28,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         username: req.user.username
     }
     //add to hotels db
-    var newHotel = {name:name, image:image, description:desc, author:author}
+    var newHotel = {name:name, image:image, description:desc, author:author, price:price}
     // Create a new hotel and save it to db
     Hotel.create(newHotel, function(err, newlyCreated){
         if(err){
