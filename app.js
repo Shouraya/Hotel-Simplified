@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: ".env"});
 const express = require ("express"),
       app = express(),
       bodyParser = require("body-parser"), //To get data from form
