@@ -16,8 +16,7 @@ const express = require ("express"),
 const commentRoutes = require("./routes/comments"),
       hotelRoutes = require("./routes/hotels"),
       indexRoutes = require("./routes/index");
-
-mongoose.connect("mongodb://localhost/hotel_app", {
+mongoose.connect(process.env.DATABASEURL, {
     useNewUrlParser: true,   //these are written to remove deprecations warning
     useUnifiedTopology: true,
     useFindAndModify: false,
