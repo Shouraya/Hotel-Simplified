@@ -21,7 +21,7 @@
                         <h1><a><%= hotel.name %></a></h1>
                         <p><%= hotel.description %></p>
                         <p>
-                            <em>Submitted By <%= hotel.author.username %></em>
+                            <em>Submitted By <%= hotel.author.username %>, <%= moment(hotel.createdAt).fromNow() %></em>
                         </p>
                         <% if(currentUser && hotel.author.id.equals(currentUser._id)){ %>
                             <a href="/hotels/<%=hotel._id%>/edit" class="btn btn-warning">Edit</a>
@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <strong><%= comment.author.username %></strong>
-                                <span class="pull-right">10 days ago</span>
+                                <span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
                                 <p>
                                     <%= comment.text %>
                                 </p>
