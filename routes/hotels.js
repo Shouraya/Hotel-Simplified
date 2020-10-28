@@ -27,8 +27,6 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     }).send();
     geoData.then(function(data) {
         var geometry = data.body.features[0].geometry;
-        console.log("GEOMETRY INSIDE :");
-        console.log(geometry);
         // EDITING
         //get data from form
         var name = req.body.name;
@@ -39,8 +37,6 @@ router.post("/", middleware.isLoggedIn, function(req, res){
             id: req.user._id,
             username: req.user.username
         }
-        console.log("GEOMETRY OUTSIDE :");
-            console.log(geometry);
         //add to hotels db
         var newHotel = {name:name, image:image, description:desc, author:author, price:price};
         // Create a new hotel and save it to db
