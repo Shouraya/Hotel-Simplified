@@ -35,7 +35,8 @@ app.use(flash());
 const morgan = require('morgan');
 app.use(morgan('[:date[web]] ":method :url HTTP/:http-version" :status :res[content-length] - :response-time ms'));
 //HTTP Logging Code END
-
+// MOMENT CODE FOR TIME
+app.locals.moment = require('moment');
 ///PASSPORT CONFIGURATION
 app.use(require("express-session")({
     secret: process.env.SECRET,
