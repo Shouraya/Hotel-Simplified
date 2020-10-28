@@ -1,7 +1,10 @@
 const express = require("express"),
       router = express.Router(),
       Hotel = require("../models/hotel"),
-      middleware = require("../middleware/index");
+      middleware = require("../middleware/index"),
+      mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding"),
+      mapBoxToken = process.env.MAPBOX_TOKEN,
+      geocoder = mbxGeocoding({accessToken: mapBoxToken});
 
 //Display all Hotels that we have (INDEX ROUTE)
 router.get("/", function(req, res){
@@ -18,25 +21,34 @@ router.get("/", function(req, res){
 
 //Create New Hotel Post (CREATE Route)
 router.post("/", middleware.isLoggedIn, function(req, res){
-    //get data from form
-    var name = req.body.name;
-    var price = req.body.price;
-    var image = req.body.image;
-    var desc = req.body.description;
-    var author = {
-        id: req.user._id,
-        username: req.user.username
-    }
-    //add to hotels db
-    var newHotel = {name:name, image:image, description:desc, author:author, price:price}
-    // Create a new hotel and save it to db
-    Hotel.create(newHotel, function(err, newlyCreated){
-        if(err){
-            console.log(err);
-        } else {
-            //redirect to hotels page (get)
-        res.redirect("/hotels");
+    var geoData = geocoder.forwardGeocode({
+        query: req.body.location,
+        limit: 1
+    }).send();
+    geoData.then(function(data) {
+        var geometry = data.body.features[0].geometry;
+        // EDITING
+        //get data from form
+        var name = req.body.name;
+        var price = req.body.price;
+        var image = req.body.image;
+        var desc = req.body.description;
+        var author = {
+            id: req.user._id,
+            username: req.user.username
         }
+        //add to hotels db
+        var newHotel = {name:name, image:image, description:desc, author:author, price:price, geometry:geometry};
+        // Create a new hotel and save it to db
+        Hotel.create(newHotel, function(err, newlyCreated){
+            if(err){
+                console.log(err);
+            } else {
+                //redirect to hotels page (get)
+            res.redirect("/hotels");
+            }
+        });
+        // EDITING ENDS
     });
 });
 

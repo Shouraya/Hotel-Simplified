@@ -8,7 +8,10 @@
                     <li class="list-group-item">Info 2</li>
                     <li class="list-group-item">Info 3</li>
                 </div>
-                <!-- MAP (to be added later) -->
+                <!-- Map -->
+                <div class="thumbnail">
+                    <div id='map' style='width: 100%; height: 400px;'></div>
+                </div>
             </div>
             <div class="col-md-9">
                 <div class="thumbnail">
@@ -59,4 +62,9 @@
             </div>
         </div>
     </div>
+    <script>
+        const mapToken = '<%- process.env.MAPBOX_TOKEN %>'
+        const hotel = <%- JSON.stringify(hotel) %>
+    </script>
+    <script src="/javascripts/showPageMap.js"></script>
 <%- include("../partials/footer") %>
