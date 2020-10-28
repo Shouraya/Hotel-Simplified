@@ -1,7 +1,10 @@
 const express = require("express"),
       router = express.Router(),
       Hotel = require("../models/hotel"),
-      middleware = require("../middleware/index");
+      middleware = require("../middleware/index"),
+      mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding"),
+      mapBoxToken = process.env.MAPBOX_TOKEN,
+      geocoder = mbxGeocoding({accessToken: mapBoxToken});
 
 //Display all Hotels that we have (INDEX ROUTE)
 router.get("/", function(req, res){
@@ -18,6 +21,27 @@ router.get("/", function(req, res){
 
 //Create New Hotel Post (CREATE Route)
 router.post("/", middleware.isLoggedIn, function(req, res){
+    // geocodingClient.forwardGeocode({
+    //     query: 'Paris, France',
+    //     limit: 2
+    //   })
+    //     .send()
+    //     .then(response => {
+    //       const match = response.body;
+    //     });
+    // console.log("GEODATA:");
+    // console.log(geoData.query);
+    console.log("GEEOCODER -");
+    console.log(geocoder);
+    var geoData = geocoder.forwardGeocode({
+        query: req.body.location,
+        limit: 1
+    }).send();
+    geoData.then(function(data) {
+        console.log(data.body.features[0].geometry.coordinates);
+    });
+    console.log("************");
+    console.log(geoData);
     //get data from form
     var name = req.body.name;
     var price = req.body.price;
