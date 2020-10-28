@@ -38,7 +38,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
             username: req.user.username
         }
         //add to hotels db
-        var newHotel = {name:name, image:image, description:desc, author:author, price:price};
+        var newHotel = {name:name, image:image, description:desc, author:author, price:price, geometry:geometry};
         // Create a new hotel and save it to db
         Hotel.create(newHotel, function(err, newlyCreated){
             if(err){
