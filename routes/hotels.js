@@ -21,46 +21,38 @@ router.get("/", function(req, res){
 
 //Create New Hotel Post (CREATE Route)
 router.post("/", middleware.isLoggedIn, function(req, res){
-    // geocodingClient.forwardGeocode({
-    //     query: 'Paris, France',
-    //     limit: 2
-    //   })
-    //     .send()
-    //     .then(response => {
-    //       const match = response.body;
-    //     });
-    // console.log("GEODATA:");
-    // console.log(geoData.query);
-    console.log("GEEOCODER -");
-    console.log(geocoder);
     var geoData = geocoder.forwardGeocode({
         query: req.body.location,
         limit: 1
     }).send();
     geoData.then(function(data) {
-        console.log(data.body.features[0].geometry.coordinates);
-    });
-    console.log("************");
-    console.log(geoData);
-    //get data from form
-    var name = req.body.name;
-    var price = req.body.price;
-    var image = req.body.image;
-    var desc = req.body.description;
-    var author = {
-        id: req.user._id,
-        username: req.user.username
-    }
-    //add to hotels db
-    var newHotel = {name:name, image:image, description:desc, author:author, price:price}
-    // Create a new hotel and save it to db
-    Hotel.create(newHotel, function(err, newlyCreated){
-        if(err){
-            console.log(err);
-        } else {
-            //redirect to hotels page (get)
-        res.redirect("/hotels");
+        var geometry = data.body.features[0].geometry;
+        console.log("GEOMETRY INSIDE :");
+        console.log(geometry);
+        // EDITING
+        //get data from form
+        var name = req.body.name;
+        var price = req.body.price;
+        var image = req.body.image;
+        var desc = req.body.description;
+        var author = {
+            id: req.user._id,
+            username: req.user.username
         }
+        console.log("GEOMETRY OUTSIDE :");
+            console.log(geometry);
+        //add to hotels db
+        var newHotel = {name:name, image:image, description:desc, author:author, price:price};
+        // Create a new hotel and save it to db
+        Hotel.create(newHotel, function(err, newlyCreated){
+            if(err){
+                console.log(err);
+            } else {
+                //redirect to hotels page (get)
+            res.redirect("/hotels");
+            }
+        });
+        // EDITING ENDS
     });
 });
 

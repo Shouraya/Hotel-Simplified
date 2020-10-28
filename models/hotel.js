@@ -6,8 +6,17 @@ const hotelSchema = new mongoose.Schema({
     image: String,
     description: String,
     location: String,
-    lat: Number,
-    lng: Number,
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            // required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
