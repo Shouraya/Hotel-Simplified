@@ -4,9 +4,11 @@
         <div class="container">
             <h1>Welcome to Hotel-Simplified !</h1>
             <p>View your hand-picked hotels from all over the world !</p>
+            <% if(currentUser){ %>
             <p>
                 <a href="/hotels/new" class="btn btn-primary btn-large">Add new Hotel</a>
             </p>
+            <% } %>
         </div>
     </header>
 
