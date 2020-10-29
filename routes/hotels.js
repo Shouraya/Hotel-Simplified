@@ -8,15 +8,26 @@ const express = require("express"),
 
 //Display all Hotels that we have (INDEX ROUTE)
 router.get("/", function(req, res){
-    // get all hotels from db
-    Hotel.find({}, function(err, allHotels){
-        if(err){
-            console.log(err);
-        } else {
-            res.render("hotels/index", {hotels:allHotels, page: 'campgrounds'});
-                //req.user //contain username and id of currently logged in user
-        }
-    })
+    if(req.query.search) {
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+        Hotel.find({name: regex}, function(err, allHotels){
+            if(err){
+                console.log(err);
+            } else {
+                res.render("hotels/index", {hotels:allHotels, page: 'hotels'});
+            }
+        });
+    } else {
+        // get all hotels from db
+        Hotel.find({}, function(err, allHotels){
+            if(err){
+                console.log(err);
+            } else {
+                res.render("hotels/index", {hotels:allHotels, page: 'hotels'});
+                    //req.user //contain username and id of currently logged in user
+            }
+        });
+    }
 });
 
 //Create New Hotel Post (CREATE Route)
@@ -59,7 +70,7 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
 
 //Display Information about a particular Hotel (SHOW Route)
 router.get("/:id", function(req, res){
-    //find the campground with the given ID
+    //find the Hotel with the given ID
     Hotel.findById(req.params.id).populate("comments").exec(function(err, foundHotel){
         if(err || !foundHotel) {
             req.flash("error", "Hotel not found");
@@ -79,7 +90,7 @@ router.get("/:id/edit", middleware.checkHotelOwnership, function(req, res){
         }); 
 });
 
-//Update Campground Route
+//Update Hotel Route
 router.put("/:id", middleware.checkHotelOwnership, function(req, res){
     //find and update the correct hotel
     Hotel.findByIdAndUpdate(req.params.id, req.body.hotel, function(err, updatedHotel){
@@ -102,5 +113,7 @@ router.delete("/:id", middleware.checkHotelOwnership, function(req, res){
     });
 }); 
 
-
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 module.exports = router;

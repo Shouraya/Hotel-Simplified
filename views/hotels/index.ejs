@@ -4,13 +4,31 @@
         <div class="container">
             <h1>Welcome to Hotel-Simplified !</h1>
             <p>View your hand-picked hotels from all over the world !</p>
+            <% if(currentUser){ %>
             <p>
                 <a href="/hotels/new" class="btn btn-primary btn-large">Add new Hotel</a>
+            </p>
+            <% } %>
+            <p>
+                <form action="/hotels" method="GET">
+                    <div class="form-group row">
+                        <div class="col-xs-10">
+                            <input type="text" name="search" placeholder="Hotel Search..."  aria-describedby="helpBlock" class="form-control" >
+                            <input type="submit" value="Search" class="btn btn-info" style="margin-top: 4px;">
+                        </div>
+                        <div class="col-xs-2"></div>
+                    </div>
+                </form>
             </p>
         </div>
     </header>
 
     <div class="row text-center" style="display: flex; flex-wrap: wrap;">
+        <div class="col-md-12">
+            <% if(hotels.length == 0) {%>
+                <div class="alert alert-danger" role="alert">No Hotel Found for the searched query, Please try again or <a href="/hotels" style="text-decoration: none;">Click here</a> to go back.</div>
+            <% } %>
+        </div>
         <% hotels.forEach(function(hotel){ %> 
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">
