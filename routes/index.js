@@ -1,7 +1,8 @@
 const express = require("express"),
       router = express.Router(),
       passport = require("passport"),
-      User = require("../models/user");
+      User = require("../models/user"),
+      Hotel = require("../models/hotel");
 
 //Landing Route
 router.get("/", (req, res) => {
@@ -59,6 +60,25 @@ router.get("/logout", function(req, res){
     req.logout();
     req.flash("success", "Logged You Out !");
     res.redirect("/hotels");
+});
+
+// USER PROFILE 
+router.get("/users/:id", function(req, res){
+    User.findById(req.params.id, function(err, foundUser){
+        if(err){
+            req.flash("error", "Something went wrong !");
+            return res.redirect("/");
+        } else {
+            Hotel.find().where('author.id').equals(foundUser._id).exec(function(err, hotels){
+                if(err) {
+                    req.flash("error", "Something went wrong !");
+                    return res.redirect("/");
+                } 
+                res.render("users/show", {user: foundUser, hotels, hotels});
+            })
+            
+        }
+    });
 });
 
 module.exports = router;

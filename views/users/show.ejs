@@ -1,0 +1,30 @@
+<%- include("../partials/header") %>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                <h1><%= user.firstName + " " + user.lastName %></h1>
+                <div class="thumbnail">
+                    <img src="<%= user.avatar %>" alt="<%= user.firstName %> Image"> 
+                    <div class="caption">
+                        <a href="mailto:<%= user.email %>">
+                            <%= user.email %>
+                        </a>
+                    </div>   
+                </div>
+                <!-- User Profile Description -->
+                Cillum ex aliquip eu ut laboris duis deserunt minim eu amet in. Tempor eiusmod ex aute nostrud quis aliqua do et ipsum dolor mollit in mollit. Velit elit voluptate eu culpa veniam aliqua eiusmod proident minim laborum velit laborum. Nisi ad aute mollit aute consectetur sit minim consectetur commodo dolor nulla est proident. Incididunt ad aliqua excepteur mollit do dolore voluptate cupidatat anim tempor.
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+                <h3><%= user.username %>'s hotels</h3>
+                <ul>
+                    <% hotels.forEach(function(hotel) { %>
+                        <li><a href="/hotels/<%= hotel.id %>"><%= hotel.name %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<%- include("../partials/footer") %>
