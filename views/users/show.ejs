@@ -1,0 +1,37 @@
+<%- include("../partials/header") %>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                <h1><%= user.firstName + " " + user.lastName %></h1>
+                <div class="thumbnail">
+                    <img src="<%= user.avatar %>" alt="<%= user.firstName %> Image"> 
+                    <div class="caption">
+                        <a href="mailto:<%= user.email %>">
+                            <%= user.email %>
+                        </a>
+                    </div>   
+                </div>
+                <!-- User Profile Description -->
+                <div style="margin-bottom: 1rem;">
+                    <% if(user.description == "") { %>
+                        <p class="lead">
+                            DESCRIPTION NOT PROVIDED 😓
+                        </p>
+                    <% } %>
+                    <%= user.description %>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+                <h3><%= user.username %>'s hotels</h3>
+                <ul>
+                    <% hotels.forEach(function(hotel) { %>
+                        <li><a href="/hotels/<%= hotel.id %>"><%= hotel.name %></a></li>
+                    <% }); %>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<%- include("../partials/footer") %>

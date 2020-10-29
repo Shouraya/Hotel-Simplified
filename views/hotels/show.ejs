@@ -21,7 +21,7 @@
                         <h1><a><%= hotel.name %></a></h1>
                         <p><%= hotel.description %></p>
                         <p>
-                            <em>Submitted By <%= hotel.author.username %>, <%= moment(hotel.createdAt).fromNow() %></em>
+                            <em>Submitted By <a href="/users/<%= hotel.author.id%>"><%= hotel.author.username %></a>, <%= moment(hotel.createdAt).fromNow() %></em>
                         </p>
                         <% if(currentUser && hotel.author.id.equals(currentUser._id)  || currentUser && currentUser.isAdmin){ %>
                             <a href="/hotels/<%=hotel._id%>/edit" class="btn btn-warning">Edit</a>
