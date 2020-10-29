@@ -25,7 +25,8 @@ router.post("/register", function(req, res){
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        avatar: req.body.avatar
+        avatar: req.body.avatar,
+        description: req.body.description
     });
     // eval(require('locus')); //stop the code for a few seconds and look at it
     if(req.body.adminCode === process.env.SECRETCODE) {

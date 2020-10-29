@@ -13,7 +13,14 @@
                     </div>   
                 </div>
                 <!-- User Profile Description -->
-                Cillum ex aliquip eu ut laboris duis deserunt minim eu amet in. Tempor eiusmod ex aute nostrud quis aliqua do et ipsum dolor mollit in mollit. Velit elit voluptate eu culpa veniam aliqua eiusmod proident minim laborum velit laborum. Nisi ad aute mollit aute consectetur sit minim consectetur commodo dolor nulla est proident. Incididunt ad aliqua excepteur mollit do dolore voluptate cupidatat anim tempor.
+                <div style="margin-bottom: 1rem;">
+                    <% if(user.description == "") { %>
+                        <p class="lead">
+                            DESCRIPTION NOT PROVIDED 😓
+                        </p>
+                    <% } %>
+                    <%= user.description %>
+                </div>
             </div>
             <div class="col-md-2"></div>
             <div class="col-md-5">
