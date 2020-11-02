@@ -71,6 +71,33 @@ router.get('/forgot', function(req, res) {
     res.render('forgot');
 });
 
+router.post('/forgot', function(req, res, next) {
+    async.waterfall([
+      function(done) {
+        crypto.randomBytes(20, function(err, buf) {
+          var token = buf.toString('hex');
+          done(err, token);
+        });
+      },
+      function(token, done) {
+        User.findOne({ email: req.body.email }, function(err, user) {
+          if (!user) {
+            req.flash("error", 'No account with that email address exists.');
+            return res.redirect('/forgot');
+          }
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour in ms
+                                                          //link becomes invalid after an hour
+        user.save(function(err) {
+          done(err, token, user);
+        });
+      });
+    }
+  ], function(err) {
+    if (err) return next(err);
+    res.redirect('/forgot');
+  });
+});
 
 // USER PROFILE 
 router.get("/users/:id", function(req, res){
