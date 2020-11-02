@@ -92,6 +92,30 @@ router.post('/forgot', function(req, res, next) {
           done(err, token, user);
         });
       });
+    },
+    function(token, user, done) {
+      var smtpTransport = nodemailer.createTransport({
+        service: 'Gmail', 
+        auth: {
+          user: 'shourayagoyal2000@gmail.com',
+          pass: process.env.GMAILPW
+        }
+      });
+      var mailOptions = {
+        to: user.email,
+        from: 'shourayagoyal2000@gmail.com',
+        subject: 'Hotel-Simplified Password Reset',
+        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+      //Sending Mail
+      smtpTransport.sendMail(mailOptions, function(err) {
+        console.log('mail sent');
+        req.flash('success', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+        done(err, 'done');
+      });
     }
   ], function(err) {
     if (err) return next(err);
