@@ -13,10 +13,10 @@
                     </div>   
                 </div>
                 <!-- User Profile Description -->
-                <div style="margin-bottom: 1rem;">
+                <div style="margin-bottom: 1rem; background-color:rgba(211,211,211,0.3); padding: 5px; border-radius: 2%;">
                     <% if(user.description == "") { %>
                         <p class="lead">
-                            DESCRIPTION NOT PROVIDED 😓
+                            DESCRIPTION NOT PROVIDED.
                         </p>
                     <% } %>
                     <%= user.description %>
@@ -30,6 +30,10 @@
                         <li><a href="/hotels/<%= hotel.id %>"><%= hotel.name %></a></li>
                     <% }); %>
                 </ul>
+                <h3>Reset Password</h3>
+                <p>
+                    <a href="/forgot">Click Here</a>
+                </p>
             </div>
         </div>
     </div>
