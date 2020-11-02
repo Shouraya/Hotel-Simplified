@@ -2,7 +2,10 @@ const express = require("express"),
       router = express.Router(),
       passport = require("passport"),
       User = require("../models/user"),
-      Hotel = require("../models/hotel");
+      Hotel = require("../models/hotel"),
+      async = require("async"),
+      nodemailer = require("nodemailer"),
+      crypto = require("crypto");
 
 //Landing Route
 router.get("/", (req, res) => {
@@ -62,6 +65,12 @@ router.get("/logout", function(req, res){
     req.flash("success", "Logged You Out !");
     res.redirect("/hotels");
 });
+
+//FORGOT PASSWORD ROUTE
+router.get('/forgot', function(req, res) {
+    res.render('forgot');
+});
+
 
 // USER PROFILE 
 router.get("/users/:id", function(req, res){
