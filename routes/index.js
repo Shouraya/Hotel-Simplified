@@ -134,8 +134,56 @@ router.get('/reset/:token', function(req, res) {
     });
 });
 
-router.post("/reset/:token", function(req, res){
-  res.send("SUBMITTED !!");
+router.post('/reset/:token', function(req, res){
+  async.waterfall([
+    function(done) {
+      User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+        if (!user) {
+          req.flash('error', 'Password reset token is invalid or has expired.');
+          return res.redirect('back');
+        }
+        //BOTH PASSWORD MATCH OR NOT
+        if(req.body.password === req.body.confirm) {
+          user.setPassword(req.body.password, function(err) {
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
+
+            user.save(function(err) {
+              req.logIn(user, function(err) {
+                done(err, user);
+              });
+            });
+          })
+        } else {
+            req.flash("error", "Passwords do not match.");
+            return res.redirect('back');
+        }
+      });
+    },
+    //SENDING MAIL AGAIN TO SHOW THAT YOUR PWD HAS BEEN RESET SUCCESSFULLY
+    function(user, done) {
+      var smtpTransport = nodemailer.createTransport({
+        service: 'Gmail', 
+        auth: {
+          user: 'shourayagoyal2000@gmail.com',
+          pass: process.env.GMAILPW
+        }
+      });
+      var mailOptions = {
+        to: user.email,
+        from: 'shourayagoyal2000@gmail.com',
+        subject: 'Password Rest Successful !',
+        text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        req.flash('success', 'Your password has been changed, successfully !');
+        done(err);
+      });
+    }
+  ], function(err) {
+    res.redirect('/hotels');
+  });
 });
 
 // USER PROFILE 
