@@ -1,3 +1,7 @@
+body {
+    padding-top: 8rem;
+}
+
 .thumbnail img {
     width: 100%;
 }

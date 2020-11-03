@@ -172,7 +172,7 @@ router.post('/reset/:token', function(req, res){
       var mailOptions = {
         to: user.email,
         from: 'shourayagoyal2000@gmail.com',
-        subject: 'Password Rest Successful !',
+        subject: 'Password Reset Successful !',
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
