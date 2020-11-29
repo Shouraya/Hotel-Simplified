@@ -1,27 +1,27 @@
 <%- include("partials/header") %>
-
-    <!-- placeholder for Elements
-    <input id="card-name" type="text">
-    <div id="card-element"></div>
-    <button id="card-button" data-secret="{{ client_secret }}">
-    Submit Payment
-    </button> -->
-
-    <form id="payment-form">
-        <div id="card-element">
-          <!-- Elements will create input elements here -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-4 col-md-4 text-center">
+                <h1>Registeration Payment</h1>
+                <form id="payment-form">
+                    <div id="card-element" class="form-group">
+                    <!-- Elements will create input elements here -->
+                    </div>
+                    <!-- We'll put the error messages in this element -->
+                    <div id="card-errors" role="alert"></div>
+                    <div class="text-right">
+                        <button id="submit" class="btn btn-primary">Pay ₹<%= amount %></button>
+                    </div>
+                </form>
+            </div>
         </div>
-      
-        <!-- We'll put the error messages in this element -->
-        <div id="card-errors" role="alert"></div>
-      
-        <button id="submit">Pay</button>
-    </form>
+    </div>
 
 <script>
+    var clientSecret = "<%= client_secret %>"
     // Set your publishable key: remember to change this to your live publishable key in production
     // See your keys here: https://dashboard.stripe.com/account/apikeys
-    var stripe = Stripe(process.env.STRIPE_PAYMENT);
+    var stripe = Stripe('process.env.STRIPE_PAYMENT');
     var elements = stripe.elements();
     // Set up Stripe.js and Elements to use in checkout form
     var elements = stripe.elements();
