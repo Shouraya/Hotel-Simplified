@@ -18,7 +18,6 @@
     </div>
 
 <script>
-    var clientSecret = "<%= client_secret %>"
     var orderData = {
         items: [{ id: "hotelSimplified-registeration-fee" }],
         currency: "inr"
@@ -67,6 +66,28 @@
                 });
             }
             })
+            return fetch("/pay", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(orderData)
+            });
+        // }
+        })
+        .then(function(result) {
+            return result.json();
+            })
+            .then(function(response) {
+            if (response.error) {
+                var displayError = document.getElementById('card=-error');
+                displayError.textContent = response.error;
+            } else {
+                //redirect back to /hotels with a query string that
+                //invokes a success flash message 
+                window.location.href = '/hotels?paid=true'
+            }
+        });
 
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {
@@ -90,7 +111,6 @@
             // post-payment actions.
         }
         }
-    });
     });
 
 </script>    

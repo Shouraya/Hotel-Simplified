@@ -1,3 +1,5 @@
+const { isLoggedIn } = require("../middleware");
+
 const express = require("express"),
       router = express.Router(),
       passport = require("passport"),
@@ -210,21 +212,50 @@ router.get("/users/:id", function(req, res){
 });
 
 //CHECKOUT - PAYMENT
-router.get('/checkout', async (req, res) => {
-  try{
-    let amount = 1000
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount*100,  //100000 paisa = 1000 rupees
-      currency: 'inr',
-      // Verify your integration in this guide by including this parameter
-      metadata: {integration_check: 'accept_a_payment'},
-    });
-    const {client_secret} = paymentIntent;
-    res.render('checkout', { client_secret, amount });
-  } catch(err) {
-    req.flash('error', err.message);
-    res.redirect('back');
-  }
+router.get('/checkout',  (req, res) => {
+  delete req.session.amount;
+  req.session.amount = 100000;
+  res.render('checkout', {amount:100000});
 });
+
+//POST route for PAY
+router.post('/pay', isLoggedIn, async(req, res) => {
+    const { paymentMethodId, items, currency } = req.body;
+  
+    const amount = 100000
+  
+    try {
+      // Create new PaymentIntent with a PaymentMethod ID from the client.
+      const intent = await stripe.paymentIntents.create({
+        amount,
+        currency,
+        payment_method: paymentMethodId,
+        error_on_requires_action: true,
+        confirm: true
+      });
+  
+      console.log("💰 Payment received!");
+
+      req.user.isPaid = true;
+      await req.user.save();
+      // The payment is complete and the money has been moved
+      // You can add any post-payment code here (e.g. shipping, fulfillment, etc)
+  
+      // Send the client secret to the client to use in the demo
+      res.send({ clientSecret: intent.client_secret });
+    } catch (e) {
+      // Handle "hard declines" e.g. insufficient funds, expired card, card authentication etc
+      // See https://stripe.com/docs/declines/codes for more
+      if (e.code === "authentication_required") {
+        res.send({
+          error:
+            "This card requires authentication in order to proceeded. Please use a different card."
+        });
+      } else {
+        res.send({ error: e.message });
+      }
+    }
+});
+
 
 module.exports = router;
