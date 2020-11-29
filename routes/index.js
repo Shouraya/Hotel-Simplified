@@ -6,6 +6,17 @@ const express = require("express"),
       async = require("async"),
       nodemailer = require("nodemailer"),
       crypto = require("crypto");
+// Set your secret key. Remember to switch to your live secret key in production!
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+const paymentIntent = await stripe.paymentIntents.create({
+  amount: 100000,  //100000 paisa = 1000 rupees
+  currency: 'inr',
+  // Verify your integration in this guide by including this parameter
+  metadata: {integration_check: 'accept_a_payment'},
+});
+
 
 //Landing Route
 router.get("/", (req, res) => {
@@ -64,6 +75,12 @@ router.get("/logout", function(req, res){
     req.logout();
     req.flash("success", "Logged You Out !");
     res.redirect("/hotels");
+});
+
+//CHECKOUT - PAYMENT
+router.get('/checkout', async (req, res) => {
+  const intent = // ... Fetch or create the PaymentIntent
+  res.render('checkout', { client_secret: intent.client_secret });
 });
 
 //FORGOT PASSWORD ROUTE
