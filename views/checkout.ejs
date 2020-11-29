@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-offset-4 col-md-4 text-center">
-                <h1>Registeration Payment</h1>
+                <h3>Registeration Payment</h3>
                 <form id="payment-form">
                     <div id="card-element" class="form-group">
                     <!-- Elements will create input elements here -->
@@ -19,6 +19,11 @@
 
 <script>
     var clientSecret = "<%= client_secret %>"
+    var orderData = {
+        items: [{ id: "hotelSimplified-registeration-fee" }],
+        currency: "inr"
+    };
+
     // Set your publishable key: remember to change this to your live publishable key in production
     // See your keys here: https://dashboard.stripe.com/account/apikeys
     var stripe = Stripe('process.env.STRIPE_PAYMENT');
@@ -46,6 +51,23 @@
     var form = document.getElementById('payment-form');
     form.addEventListener('submit', function(ev) {
     ev.preventDefault();
+    stripe.createPaymentMethod("card", card)
+            .then(function(result) {
+            if (result.error) {
+                var displayError = document.getElementById('card=-error');
+                displayError.textContent = result.error.message;
+            } else {
+                orderData.paymentMethodId = result.paymentMethod.id;
+                return fetch("/pay", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(orderData)
+                });
+            }
+            })
+
     stripe.confirmCardPayment(clientSecret, {
         payment_method: {
         card: card,
@@ -60,6 +82,7 @@
         } else {
         // The payment has been processed!
         if (result.paymentIntent.status === 'succeeded') {
+            window.location.href = '/hotels?paid=true'
             // Show a success message to your customer
             // There's a risk of the customer closing the window before callback
             // execution. Set up a webhook or plugin to listen for the
