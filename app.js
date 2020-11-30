@@ -15,6 +15,7 @@ const express = require ("express"),
 
 // IMPORTING ROUTES
 const commentRoutes = require("./routes/comments"),
+      reviewRoutes     = require("./routes/review"),
       hotelRoutes = require("./routes/hotels"),
       indexRoutes = require("./routes/index");
 mongoose.connect(process.env.DATABASEURL, {
@@ -61,6 +62,7 @@ app.use(function(req, res, next){
 app.use(indexRoutes);
 app.use("/hotels", hotelRoutes);
 app.use("/hotels/:id/comments", commentRoutes);
+app.use("/hotels/:id/reviews", reviewRoutes);
 
 //Server 
 var port = process.env.PORT || 3000;

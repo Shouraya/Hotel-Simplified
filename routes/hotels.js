@@ -71,7 +71,10 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
 //Display Information about a particular Hotel (SHOW Route)
 router.get("/:id", function(req, res){
     //find the Hotel with the given ID
-    Hotel.findById(req.params.id).populate("comments").exec(function(err, foundHotel){
+    Hotel.findById(req.params.id).populate("comments").populate({
+        path: "reviews",
+        options: {sort: {createdAt: -1}}
+    }).exec(function(err, foundHotel){
         if(err || !foundHotel) {
             req.flash("error", "Hotel not found");
             res.redirect("back");
@@ -92,6 +95,7 @@ router.get("/:id/edit", middleware.checkHotelOwnership, function(req, res){
 
 //Update Hotel Route
 router.put("/:id", middleware.checkHotelOwnership, function(req, res){
+    delete req.body.hotel.rating;
     //find and update the correct hotel
     Hotel.findByIdAndUpdate(req.params.id, req.body.hotel, function(err, updatedHotel){
         if(err){
@@ -103,15 +107,41 @@ router.put("/:id", middleware.checkHotelOwnership, function(req, res){
 });
 
 // DESTROY/DELETE HOTEL ROUTE
-router.delete("/:id", middleware.checkHotelOwnership, function(req, res){
-    Hotel.findByIdAndRemove(req.params.id, function(err){
-        if(err) {
+router.delete("/:id", middleware.checkHotelOwnership, function (req, res) {
+    Hotel.findById(req.params.id, function (err, hotel) {
+        if (err) {
             res.redirect("/hotels");
         } else {
-            res.redirect("/hotels");
+            // deletes all comments associated with the hotel
+            Comment.remove({"_id": {$in: hotel.comments}}, function (err) {
+                if (err) {
+                    console.log(err);
+                    return res.redirect("/hotels");
+                }
+                // deletes all reviews associated with the hotel
+                Review.remove({"_id": {$in: hotel.reviews}}, function (err) {
+                    if (err) {
+                        console.log(err);
+                        return res.redirect("/hotels");
+                    }
+                    //  delete the hotel
+                    hotel.remove();
+                    req.flash("success", "Hotel deleted successfully!");
+                    res.redirect("/hotels");
+                });
+            });
         }
     });
-}); 
+});
+// router.delete("/:id", middleware.checkHotelOwnership, function(req, res){
+//     Hotel.findByIdAndRemove(req.params.id, function(err){
+//         if(err) {
+//             res.redirect("/hotels");
+//         } else {
+//             res.redirect("/hotels");
+//         }
+//     });
+// }); 
 
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
