@@ -8,6 +8,7 @@ const express = require("express"),
 
 //Display all Hotels that we have (INDEX ROUTE)
 router.get("/", function(req, res){
+    if(req.query.paid) res.locals.success = 'Payment Succeeded, welcome to Hotel-Simplified';
     if(req.query.search) {
         const regex = new RegExp(escapeRegex(req.query.search), 'gi');
         Hotel.find({name: regex}, function(err, allHotels){
