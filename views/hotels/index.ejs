@@ -35,6 +35,15 @@
                     <img src="<%= hotel.image %>" alt="<%= hotel.name %> Image">
                     <div class="caption">
                         <h4><%= hotel.name %></h4>
+                        <% if (hotel.rating === 0) { %>
+                            <em>No reviews yet.</em>
+                        <% } else { %>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star <% if (hotel.rating > 1.5) { %> checked <% } %>"></span>
+                            <span class="fa fa-star <% if (hotel.rating > 2.5) { %> checked <% } %>"></span>
+                            <span class="fa fa-star <% if (hotel.rating > 3.5) { %> checked <% } %>"></span>
+                            <span class="fa fa-star <% if (hotel.rating > 4.5) { %> checked <% } %>"></span>
+                        <% } %>
                     </div>
                     <p>
                         <a href="/hotels/<%= hotel._id %>" class="btn btn-primary">More Info</a>

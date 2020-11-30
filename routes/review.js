@@ -1,5 +1,5 @@
 var express = require("express"),
-    router = express.Router(),
+    router = express.Router({mergeParams: true}),
     Hotel = require("../models/hotel"),
     Review = require("../models/review"),
     middleware = require("../middleware");
