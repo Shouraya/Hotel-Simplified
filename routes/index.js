@@ -238,7 +238,7 @@ router.post('/contact', async (req, res) => {
     if (error.response) {
       console.error(error.response.body)
     }
-    req.flash('error', 'Sorry, something went wrong, please contact us on shourayagoyal2000@gmail.com');
+    req.flash('error', 'Sorry, something went wrong, Please try again later');
     res.redirect('back');
   }
 });
