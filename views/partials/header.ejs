@@ -30,6 +30,7 @@
                 <li class="<%= typeof page !== 'undefined' && page === 'hotels' ? 'active' : '' %>"><a href="/hotels">Home</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/contact">Contact</a></li>
                   <% if(!currentUser){ %>
                       <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
                       <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>

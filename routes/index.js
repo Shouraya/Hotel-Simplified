@@ -1,12 +1,15 @@
 const express = require("express"),
       router = express.Router(),
       passport = require("passport"),
+      middleware = require("../middleware/index"),
       User = require("../models/user"),
       Hotel = require("../models/hotel"),
       async = require("async"),
       nodemailer = require("nodemailer"),
       crypto = require("crypto");
-
+// SENDGRID
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 //Landing Route
 router.get("/", (req, res) => {
     res.render("landing");
@@ -203,6 +206,41 @@ router.get("/users/:id", function(req, res){
             
         }
     });
+});
+
+//GET /contact
+router.get('/contact', middleware.isLoggedIn, (req, res) => {
+  res.render('contact');
+}); 
+
+//post /contact
+router.post('/contact', async (req, res) => {
+  let { name, email, message } = req.body
+  name = req.sanitize(name);
+  email = req.sanitize(email);
+  message = req.sanitize(message);
+  // lconst sanitizedString = req.sanitize(req.body);
+  const msg = {
+    to: 'shourayagoyal2000@gmail.com',
+    from: email, // Use the email address or domain you verified above
+    subject: `Hotel Simplified Contact Form from ${name}`,
+    text: message,
+    html: message,
+  };
+  try {
+    // throw new Error('something went wrong!');
+    await sgMail.send(msg);
+    req.flash('success', 'Thank you for your email, we will get back to you shortly.');
+    res.redirect("/hotels");
+  } catch (error) {
+    console.error(error);
+ 
+    if (error.response) {
+      console.error(error.response.body)
+    }
+    req.flash('error', 'Sorry, something went wrong, Please try again later');
+    res.redirect('back');
+  }
 });
 
 module.exports = router;
