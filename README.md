@@ -11,6 +11,9 @@ M - MongoDB \
 E - Express <br/>
 N - Node.js <br/>
 
+## Deployed Version ##
+To view the deployed version [Click Here](https://hotel-simplified.herokuapp.com/).
+
 ## Contributing ##
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change. <br/>
 Please make sure to update your local repository. <br/>
