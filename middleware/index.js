@@ -1,6 +1,7 @@
 // all the middleware comes here
 const Hotel = require("../models/hotel");
 const Comment = require("../models/comment");
+const Review = require("../models/review");
 const middlewareObj = {};
 middlewareObj.checkHotelOwnership = function(req, res, next){
     if(req.isAuthenticated()){

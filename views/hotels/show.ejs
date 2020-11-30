@@ -63,7 +63,7 @@
                                 <p style="text-align: justify; word-wrap: break-word;">
                                     <%= review.text %>
                                 </p>
-                                <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
+                                <% if(currentUser && review.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
                                 <a class="btn btn-xs btn-warning"
                                 href="/hotels/<%=hotel._id %>/reviews/<%=review._id %>/edit">Edit</a>
                                 <form id="delete-form" action="/hotels/<%=hotel._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
@@ -84,6 +84,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- COMMENT -->
                 <div class="well">
                     <div class="text-right">
                         <a class="btn btn-success" href="/hotels/<%= hotel._id %>/comments/new">
@@ -112,6 +113,7 @@
                         </p>
                     <% }) %>
                 </div>
+                <!-- COMMENT END -->
             </div>
         </div>
     </div>
