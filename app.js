@@ -64,6 +64,10 @@ app.use("/hotels", hotelRoutes);
 // app.use("/hotels/:id/comments", commentRoutes);
 app.use("/hotels/:id/reviews", reviewRoutes);
 
+app.get("*", function(req, res){
+    res.render('error');
+});
+
 //Server 
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
