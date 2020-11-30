@@ -10,7 +10,8 @@ const express = require ("express"),
       Hotel = require("./models/hotel"),
       Comment = require("./models/comment"),
       User = require("./models/user"),
-      seedDB = require("./seeds");
+      seedDB = require("./seeds"),
+      expressSanitizer = require("express-sanitizer");
 
 // IMPORTING ROUTES
 const commentRoutes = require("./routes/comments"),
@@ -23,11 +24,12 @@ mongoose.connect(process.env.DATABASEURL, {
     useCreateIndex: true    
 });
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public")); 
 app.use(methodOverride("_method"));
 app.use(flash());
+app.use(expressSanitizer());
 
 // seedDB();    //seed the database
  

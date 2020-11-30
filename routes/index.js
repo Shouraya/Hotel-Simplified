@@ -209,20 +209,26 @@ router.get("/users/:id", function(req, res){
 });
 
 //GET /contact
-router.get('/contact', middleware.isLoggedIn, (req, res)=> {
+router.get('/contact', middleware.isLoggedIn, (req, res) => {
   res.render('contact');
 }); 
 
 //post /contact
-router.post('/contact', async (req, res)=> {
+router.post('/contact', async (req, res) => {
+  let { name, email, message } = req.body
+  name = req.sanitize(name);
+  email = req.sanitize(email);
+  message = req.sanitize(message);
+  // lconst sanitizedString = req.sanitize(req.body);
   const msg = {
     to: 'shourayagoyal2000@gmail.com',
-    from: req.body.email, // Use the email address or domain you verified above
-    subject: 'Hotel Simplified Contact Form',
-    text: req.body.message,
-    html: req.body.message,
+    from: email, // Use the email address or domain you verified above
+    subject: `Hotel Simplified Contact Form from ${name}`,
+    text: message,
+    html: message,
   };
   try {
+    // throw new Error('something went wrong!');
     await sgMail.send(msg);
     req.flash('success', 'Thank you for your email, we will get back to you shortly.');
     res.redirect("/hotels");
