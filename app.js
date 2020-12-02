@@ -8,14 +8,14 @@ const express = require ("express"),
       LocalStrategy = require("passport-local"),
       methodOverride = require("method-override"),
       Hotel = require("./models/hotel"),
-    //   Comment = require("./models/comment"),
+      Comment = require("./models/comment"),
       User = require("./models/user"),
       seedDB = require("./seeds"),
       expressSanitizer = require("express-sanitizer");
 
 // IMPORTING ROUTES
 const reviewRoutes     = require("./routes/review"),
-    //   commentRoutes = require("./routes/comments"),      
+      commentRoutes = require("./routes/comments"),      
       hotelRoutes = require("./routes/hotels"),
       indexRoutes = require("./routes/index");
 mongoose.connect(process.env.DATABASEURL, {
@@ -61,7 +61,7 @@ app.use(function(req, res, next){
 
 app.use(indexRoutes);
 app.use("/hotels", hotelRoutes);
-// app.use("/hotels/:id/comments", commentRoutes);
+app.use("/hotels/:id/comments", commentRoutes);
 app.use("/hotels/:id/reviews", reviewRoutes);
 
 app.get("*", function(req, res){
