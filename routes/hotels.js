@@ -1,6 +1,8 @@
 const express = require("express"),
       router = express.Router(),
       Hotel = require("../models/hotel"),
+      Comment = require("../models/comment"),
+      Review = require("../models/review"),
       middleware = require("../middleware/index"),
       mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding"),
       mapBoxToken = process.env.MAPBOX_TOKEN,
@@ -113,13 +115,13 @@ router.delete("/:id", middleware.checkHotelOwnership, function (req, res) {
             res.redirect("/hotels");
         } else {
             // deletes all comments associated with the hotel
-            Comment.remove({"_id": {$in: hotel.comments}}, function (err) {
+            Comment.deleteMany({"_id": {$in: hotel.comments}}, function (err) {
                 if (err) {
                     console.log(err);
                     return res.redirect("/hotels");
                 }
                 // deletes all reviews associated with the hotel
-                Review.remove({"_id": {$in: hotel.reviews}}, function (err) {
+                Review.deleteMany({"_id": {$in: hotel.reviews}}, function (err) {
                     if (err) {
                         console.log(err);
                         return res.redirect("/hotels");
